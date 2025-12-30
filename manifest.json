@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "La mia Web App",
   "short_name": "MiaApp",
@@ -13,3 +14,13 @@
     }
   ]
 }
+=======
+{
+  "name": "Studio Feed",
+  "short_name": "Feed",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0f14",
+  "theme_color": "#0d0f14"
+}
+>>>>>>> c6dd57d (Initial commit frontend)
