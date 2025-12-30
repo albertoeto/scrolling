@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: #f2f2f2;
-    padding: 40px;
-}
-
-button {
-    padding: 15px 25px;
-    font-size: 18px;
-    border: none;
-    background: #007aff;
-    color: white;
-    border-radius: 10px;
-}
-=======
 /* Base */
 * { box-sizing: border-box; margin:0; padding:0; }
 
@@ -116,4 +99,3 @@ audio { width: 100%; padding: 10px; }
   justify-content: center;
   align-items: center;
 }
->>>>>>> c6dd57d (Initial commit frontend)
