@@ -1,0 +1,8 @@
+{
+  "name": "Studio Feed",
+  "short_name": "Feed",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0f14",
+  "theme_color": "#0d0f14"
+}
