@@ -2,21 +2,17 @@ const feed = document.getElementById("feed");
 const overlay = document.getElementById("overlay");
 const overlayContent = document.getElementById("overlay-content");
 const backBtn = document.getElementById("back");
-const viewStudiedBtn = document.getElementById("view-studied");
-const studiedList = document.getElementById("studied-list");
 
 let files = [];
 let pointer = 0;
 const BATCH = 4;
 const studied = new Set(JSON.parse(localStorage.getItem("studied") || "[]"));
 
-// Estrae l'ID Google Drive dall'URL
 function getDriveId(url) {
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
   return match ? match[1] : url;
 }
 
-// Carica il JSON delle risorse
 fetch("resources.json")
   .then(r => r.json())
   .then(data => {
@@ -46,24 +42,23 @@ function renderPost(file){
   const mediaBox = document.createElement("div");
   mediaBox.className = "media-box";
 
-  // Tutte le risorse Google Drive → iframe /preview
-  if(file.type === "image"){
-    const iframe = document.createElement("iframe");
-    iframe.src = file.src; // es. /preview di Drive
-    iframe.style.width = "100%";
-    iframe.style.height = "70vh";
-    iframe.style.border = "none";
-    mediaBox.appendChild(iframe);
+  const iframe = document.createElement("iframe");
+  iframe.src = file.src;
+  iframe.style.width = "100%";
+  iframe.style.border = "none";
+
+  if(file.type === "image" || file.type === "video"){
+    // Altezza 16:9
+    const w = feed.offsetWidth;
+    iframe.style.height = `${w * 9 / 16}px`;
+  } else if(file.type === "audio"){
+    iframe.style.height = "80px"; // audio compatto
   } else {
-    const iframe = document.createElement("iframe");
-    iframe.src = file.src;
-    iframe.style.width = "100%";
     iframe.style.height = "70vh";
-    iframe.style.border = "none";
     if(file.type === "pdf") iframe.className = "pdf-frame";
-    mediaBox.appendChild(iframe);
   }
 
+  mediaBox.appendChild(iframe);
   post.appendChild(mediaBox);
 
   const actions = document.createElement("div");
@@ -90,35 +85,25 @@ function renderPost(file){
   feed.appendChild(post);
 }
 
-// FULLSCREEN → sempre iframe /preview
 function openFullscreen(file){
   overlayContent.innerHTML = "";
-  const node = document.createElement("iframe");
-  node.src = file.src; // /preview di Drive
-  node.style.width = "90vw";
-  node.style.height = "90vh";
-  node.style.border = "none";
-  overlayContent.appendChild(node);
+  const iframe = document.createElement("iframe");
+  iframe.src = file.src;
+  iframe.style.width = "90vw";
+  iframe.style.border = "none";
+
+  if(file.type === "image" || file.type === "video"){
+    // altezza 16:9
+    const w = window.innerWidth * 0.9; // 90vw
+    iframe.style.height = `${w * 9 / 16}px`;
+  } else if(file.type === "audio"){
+    iframe.style.height = "80px";
+  } else {
+    iframe.style.height = "90vh";
+  }
+
+  overlayContent.appendChild(iframe);
   overlay.classList.remove("hidden");
 }
 
 backBtn.onclick = () => overlay.classList.add("hidden");
-
-// VISUALIZZA STUDIATI
-viewStudiedBtn.onclick = () => {
-  studiedList.innerHTML = "";
-  studied.forEach(id => {
-    const div = document.createElement("div");
-    div.textContent = id;
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Rimuovi";
-    removeBtn.onclick = () => {
-      studied.delete(id);
-      localStorage.setItem("studied", JSON.stringify([...studied]));
-      div.remove();
-    };
-    div.appendChild(removeBtn);
-    studiedList.appendChild(div);
-  });
-  studiedList.classList.toggle("hidden");
-};

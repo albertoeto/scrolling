@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studiati</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>📚 Contenuti Studiati</header>
+
+  <div id="studied-list-container">
+    <div id="studied-list"></div>
+  </div>
+
+  <a href="index.html"><button style="margin:12px;">← Torna al Feed</button></a>
+
+  <script>
+    const studiedList = document.getElementById("studied-list");
+    const studied = new Set(JSON.parse(localStorage.getItem("studied") || "[]"));
+
+    studied.forEach(id => {
+      const div = document.createElement("div");
+      div.textContent = id;
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Rimuovi";
+      removeBtn.onclick = () => {
+        studied.delete(id);
+        localStorage.setItem("studied", JSON.stringify([...studied]));
+        div.remove();
+      };
+      div.appendChild(removeBtn);
+      studiedList.appendChild(div);
+    });
+  </script>
+</body>
+</html>
