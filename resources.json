@@ -7,18 +7,42 @@
         "chapter": "01 Introduzione",
         "slug": "01-introduzione",
         "resources": [
-          { "type": "pdf", "file": "01-Big_O_L_Arte_dell_Efficienza_del_Codice.pdf" },
-          { "type": "pdf",   "file": "02-A Study Guide to Big O Notation.pdf" },
-          { "type": "video", "file": "03-Demystifying_Big_O (1).mp4" },
-          { "type": "audio", "file": "04-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a" }
+          {
+            "type": "pdf",
+            "file": "01-Big_O_L_Arte_dell_Efficienza_del_Codice.pdf",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/01-introduzione/01-Big_O_L_Arte_dell_Efficienza_del_Codice.pdf"
+          },
+          {
+            "type": "pdf",
+            "file": "02-A Study Guide to Big O Notation.pdf",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/01-introduzione/02-A%20Study%20Guide%20to%20Big%20O%20Notation.pdf"
+          },
+          {
+            "type": "video",
+            "file": "03-Demystifying_Big_O (1).mp4",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/01-introduzione/03-Demystifying_Big_O%20(1).mp4"
+          },
+          {
+            "type": "audio",
+            "file": "04-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/01-introduzione/04-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a"
+          }
         ]
       },
       {
         "chapter": "02 Ricorsione",
         "slug": "02-ricorsione",
         "resources": [
-          { "type": "audio",   "file": "01-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a" },
-          { "type": "image", "file": "02-unnamed.png" }
+          {
+            "type": "audio",
+            "file": "01-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/02-ricorsione/01-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a"
+          },
+          {
+            "type": "image",
+            "file": "02-unnamed.png",
+            "src": "https://raw.githubusercontent.com/albertoeto/scrolling/main/resources/libro-algoritmi/02-ricorsione/02-unnamed.png"
+          }
         ]
       }
     ]
