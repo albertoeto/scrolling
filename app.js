@@ -3,35 +3,48 @@ const overlay = document.getElementById("overlay");
 const overlayContent = document.getElementById("overlay-content");
 const backBtn = document.getElementById("back");
 
-let files = [];
+const studied = new Set(JSON.parse(localStorage.getItem("studied") || "[]"));
+let flatResources = [];
 let pointer = 0;
 const BATCH = 4;
-const studied = new Set(JSON.parse(localStorage.getItem("studied") || "[]"));
-
-function getDriveId(url) {
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  return match ? match[1] : url;
-}
 
 fetch("resources.json")
   .then(r => r.json())
   .then(data => {
-    files = data.flatMap(book => book.chapters.flatMap(ch => ch.resources))
-                .filter(f => !studied.has(getDriveId(f.src)));
-    shuffle(files);
+    flatResources = flattenResources(data)
+      .filter(r => !studied.has(r.id));
     loadMore();
     window.addEventListener("scroll", onScroll);
-  })
-  .catch(err => console.error("Errore caricamento resources.json", err));
+  });
 
-function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
+function flattenResources(data) {
+  const out = [];
+  data.forEach(book => {
+    book.chapters.forEach(ch => {
+      ch.resources.forEach(res => {
+        const src = `resources/${book.slug}/${ch.slug}/${res.file}`;
+        out.push({
+          ...res,
+          src,
+          id: src,
+          book: book.book,
+          chapter: ch.chapter
+        });
+      });
+    });
+  });
+  return out;
+}
 
 function onScroll(){
-  if(window.innerHeight + scrollY > document.body.offsetHeight - 700) loadMore();
+  if (innerHeight + scrollY > document.body.offsetHeight - 600)
+    loadMore();
 }
 
 function loadMore(){
-  files.slice(pointer, pointer + BATCH).forEach(renderPost);
+  flatResources
+    .slice(pointer, pointer + BATCH)
+    .forEach(renderPost);
   pointer += BATCH;
 }
 
@@ -39,44 +52,28 @@ function renderPost(file){
   const post = document.createElement("div");
   post.className = "post";
 
-  const mediaBox = document.createElement("div");
-  mediaBox.className = "media-box";
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.textContent = `${file.book} · ${file.chapter}`;
 
-  const iframe = document.createElement("iframe");
-  iframe.src = file.src;
-  iframe.style.width = "100%";
-  iframe.style.border = "none";
-
-  if(file.type === "image" || file.type === "video"){
-    const w = feed.offsetWidth;
-    iframe.style.height = `${w*9/16}px`; // formato 16:9
-  } else if(file.type === "audio"){
-    iframe.style.height = "80px";
-  } else {
-    iframe.style.height = "70vh"; // PDF e link
-    if(file.type === "pdf") iframe.className = "pdf-frame";
-  }
-
-  mediaBox.appendChild(iframe);
-  post.appendChild(mediaBox);
+  post.appendChild(meta);
+  post.appendChild(createMedia(file));
 
   const actions = document.createElement("div");
   actions.className = "actions";
 
-  // SOLO ICONE: 📖 per Studiato
   const studyBtn = document.createElement("div");
   studyBtn.className = "action-btn";
-  studyBtn.textContent = "📖"; // icona senza testo
+  studyBtn.textContent = "📖";
   studyBtn.onclick = () => {
-    studied.add(getDriveId(file.src));
+    studied.add(file.id);
     localStorage.setItem("studied", JSON.stringify([...studied]));
     post.remove();
   };
 
-  // SOLO ICONE: ⤢ per Espandi
   const expandBtn = document.createElement("div");
   expandBtn.className = "action-btn";
-  expandBtn.textContent = "⤢"; // icona senza testo
+  expandBtn.textContent = "⤢";
   expandBtn.onclick = () => openFullscreen(file);
 
   actions.append(studyBtn, expandBtn);
@@ -85,23 +82,34 @@ function renderPost(file){
   feed.appendChild(post);
 }
 
-function openFullscreen(file){
-  overlayContent.innerHTML = "";
-  const iframe = document.createElement("iframe");
-  iframe.src = file.src;
-  iframe.style.width = "90vw";
-  iframe.style.border = "none";
+function createMedia(file){
+  const box = document.createElement("div");
+  box.className = "media-box";
+  let el;
 
-  if(file.type === "image" || file.type === "video"){
-    const w = window.innerWidth * 0.9; 
-    iframe.style.height = `${w*9/16}px`; // 16:9
+  if(file.type === "image"){
+    el = new Image();
+    el.src = file.src;
+  } else if(file.type === "video"){
+    el = document.createElement("video");
+    el.src = file.src;
+    el.controls = true;
   } else if(file.type === "audio"){
-    iframe.style.height = "80px";
-  } else {
-    iframe.style.height = "90vh";
+    el = document.createElement("audio");
+    el.src = file.src;
+    el.controls = true;
+  } else if(file.type === "pdf"){
+    el = document.createElement("iframe");
+    el.src = file.src;
   }
 
-  overlayContent.appendChild(iframe);
+  box.appendChild(el);
+  return box;
+}
+
+function openFullscreen(file){
+  overlayContent.innerHTML = "";
+  overlayContent.appendChild(createMedia(file));
   overlay.classList.remove("hidden");
 }
 

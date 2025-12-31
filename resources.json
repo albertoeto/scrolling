@@ -1,26 +1,24 @@
 [
   {
-    "title": "Libro 1: Big O",
+    "book": "Algoritmi",
+    "slug": "libro-algoritmi",
     "chapters": [
       {
-        "title": "Capitolo 1: Introduzione",
+        "chapter": "01 Introduzione",
+        "slug": "01-introduzione",
         "resources": [
-          {
-            "type": "image",
-            "src": "https://drive.google.com/file/d/1e9L87WKO4n72uI4K_JWSuxsWMuDSzqwi/preview"
-          },
-          {
-            "type": "pdf",
-            "src": "https://drive.google.com/file/d/1tFhkz7A1jtPy_k9gbvt-VV4jDwEjBi9L/preview"
-          },
-          {
-            "type": "video",
-            "src": "https://drive.google.com/file/d/1XXeFURybyG04X0URv2rjA0RYuP8TdUAJ/preview"
-          },
-          {
-            "type": "audio",
-            "src": "https://drive.google.com/file/d/1P_fXQjfJF9q8Se0-icfW35Zid8cwE6g2/preview"
-          }
+          { "type": "pdf", "file": "01-Big_O_L_Arte_dell_Efficienza_del_Codice.pdf" },
+          { "type": "pdf",   "file": "02-A Study Guide to Big O Notation.pdf" },
+          { "type": "video", "file": "03-Demystifying_Big_O (1).mp4" },
+          { "type": "audio", "file": "04-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a" }
+        ]
+      },
+      {
+        "chapter": "02 Ricorsione",
+        "slug": "02-ricorsione",
+        "resources": [
+          { "type": "audio",   "file": "01-NotebookLM_L_AI_che_dibatte_e_ti_interroga.m4a" },
+          { "type": "image", "file": "02-unnamed.png" }
         ]
       }
     ]
