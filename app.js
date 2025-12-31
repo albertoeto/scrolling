@@ -48,13 +48,12 @@ function renderPost(file){
   iframe.style.border = "none";
 
   if(file.type === "image" || file.type === "video"){
-    // Altezza 16:9
     const w = feed.offsetWidth;
-    iframe.style.height = `${w * 9 / 16}px`;
+    iframe.style.height = `${w*9/16}px`; // formato 16:9
   } else if(file.type === "audio"){
-    iframe.style.height = "80px"; // audio compatto
+    iframe.style.height = "80px";
   } else {
-    iframe.style.height = "70vh";
+    iframe.style.height = "70vh"; // PDF e link
     if(file.type === "pdf") iframe.className = "pdf-frame";
   }
 
@@ -64,19 +63,20 @@ function renderPost(file){
   const actions = document.createElement("div");
   actions.className = "actions";
 
+  // SOLO ICONE: 📖 per Studiato
   const studyBtn = document.createElement("div");
   studyBtn.className = "action-btn";
-  studyBtn.textContent = "📖 Studiato";
+  studyBtn.textContent = "📖"; // icona senza testo
   studyBtn.onclick = () => {
-    const id = getDriveId(file.src);
-    studied.add(id);
+    studied.add(getDriveId(file.src));
     localStorage.setItem("studied", JSON.stringify([...studied]));
     post.remove();
   };
 
+  // SOLO ICONE: ⤢ per Espandi
   const expandBtn = document.createElement("div");
   expandBtn.className = "action-btn";
-  expandBtn.textContent = "⤢ Espandi";
+  expandBtn.textContent = "⤢"; // icona senza testo
   expandBtn.onclick = () => openFullscreen(file);
 
   actions.append(studyBtn, expandBtn);
@@ -93,9 +93,8 @@ function openFullscreen(file){
   iframe.style.border = "none";
 
   if(file.type === "image" || file.type === "video"){
-    // altezza 16:9
-    const w = window.innerWidth * 0.9; // 90vw
-    iframe.style.height = `${w * 9 / 16}px`;
+    const w = window.innerWidth * 0.9; 
+    iframe.style.height = `${w*9/16}px`; // 16:9
   } else if(file.type === "audio"){
     iframe.style.height = "80px";
   } else {
